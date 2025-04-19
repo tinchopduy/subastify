@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Subastify - Inicio</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f9f9f9;
+    }
+    header {
+      background: #222;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+    }
+    .container {
+      padding: 2rem;
+    }
+    .auction-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+    .auction-item {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 1rem;
+    }
+    .auction-item img {
+      max-width: 100%;
+      border-radius: 5px;
+    }
+    .auction-item h3 {
+      margin-top: 0.5rem;
+      font-size: 1.1rem;
+    }
+    .button {
+      display: inline-block;
+      background: #222;
+      color: white;
+      padding: 0.5rem 1rem;
+      text-decoration: none;
+      border-radius: 3px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div><strong>Subastify</strong></div>
+  <nav>
+    <a href="login.html">Iniciar sesión</a>
+    <a href="register.html">Registrarse</a>
+  </nav>
+</header>
+
+<div class="container">
+  <h2>Subastas activas</h2>
+  <div class="auction-list" id="auction-list">
+    <!-- Los productos se cargarán aquí dinámicamente -->
+  </div>
+</div>
+
+<script>
+  // Cargar productos desde el archivo JSON
+  fetch('productos.json')
+    .then(response => response.json())
+    .then(data => {
+      const auctionList = document.getElementById('auction-list');
+
+      data.forEach(producto => {
+        const productoDiv = document.createElement('div');
+        productoDiv.classList.add('auction-item');
+
+        productoDiv.innerHTML = `
+          <img src="${producto.imagen}" alt="${producto.nombre}">
+          <h3>${producto.nombre}</h3>
+          <p>Precio inicial: $${producto.precio}</p>
+          <p>Tiempo restante: ${producto.tiempo_restante}</p>
+          <a href="${producto.url}" class="button">Ver subasta</a>
+        `;
+
+        auctionList.appendChild(productoDiv);
+      });
+    })
+    .catch(error => console.error('Error cargando los productos:', error));
+</script>
+
+</body>
+</html>
